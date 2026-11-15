@@ -1,0 +1,39 @@
+services:
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    container_name: job_prediction_app
+
+    restart: always
+
+    expose:
+      - "5000"
+
+    networks:
+      - job_network
+
+  web:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+
+    container_name: job_prediction_web
+
+    restart: always
+
+    ports:
+      - "8080:80"
+
+    depends_on:
+      - app
+
+    networks:
+      - job_network
+
+
+networks:
+  job_network:
+    driver: bridge
